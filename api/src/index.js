@@ -1,4 +1,5 @@
 const express = require('express');
+const conn = require('./db/conn.js');
 const cors = require('cors');
 require('dotenv').config();
 
@@ -23,4 +24,6 @@ app.use(express.json());
 
 app.use('/api/authentication', AuthRoutes);
 
-app.listen(port, () => console.log(`Open on port ${port}!`));
+conn.sync({ alter: true })
+	.then(app.listen(port, () => console.log(`Open on port ${port}!`)))
+	.catch(error => console.error(error));

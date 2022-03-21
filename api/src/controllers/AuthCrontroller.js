@@ -1,3 +1,5 @@
+const User = require('../models/User.js');
+
 module.exports = class AuthCrontoller {
 	static async login(req, res) {
 		res.status(200).json({
