@@ -1,6 +1,16 @@
+const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+//require('dotenv').config();
 
 const User = require('../models/User.js');
+
+const createToken = ({ id, email }) => {
+	const token = jwt.sign({ id, email }, process.env.SECRET, {
+		expiresIn: 60 * 5,
+	});
+
+	return token;
+};
 
 const AuthCrontoller = {
 	async register(req, res) {
@@ -72,13 +82,17 @@ const AuthCrontoller = {
 				password: hashPassword,
 			});
 
+			const token = createToken({ id: user.id, email: user.email });
+
 			return res.status(201).json({
 				message: 'User created successfullyr!',
 				user,
+				token,
 			});
 		} catch (error) {
+			console.log(error);
 			res.status(500).json({
-				error,
+				error: error,
 			});
 		}
 	},

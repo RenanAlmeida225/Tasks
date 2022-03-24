@@ -25,6 +25,6 @@ app.use(express.json());
 app.use('/api/authentication', AuthRoutes);
 
 //{ alter: true }{ force: true }
-conn.sync()
+conn.sync({ force: true })
 	.then(app.listen(port, () => console.log(`Open on port ${port}!`)))
 	.catch(error => console.error(error));
