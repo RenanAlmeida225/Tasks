@@ -1,3 +1,5 @@
+const bcrypt = require('bcryptjs');
+
 const User = require('../models/User.js');
 
 const AuthCrontoller = {
@@ -19,7 +21,7 @@ const AuthCrontoller = {
 			});
 		}
 
-		if (!email.match('@') && !email.match('.com')) {
+		if (!email.match('@') || !email.match('.com')) {
 			return res.status(422).json({
 				error: 'Email must contain "@" and ."com"!',
 			});
@@ -37,31 +39,48 @@ const AuthCrontoller = {
 		// Validações de senhas
 		if (!password) {
 			return res.status(422).json({
-				error: 'password is requeired!',
-			});
-		}
-
-		if (!passwordConfirmation) {
-			return res.status(422).json({
-				error: 'password is requeired!',
+				error: 'Password is requeired!',
 			});
 		}
 
 		if (password.length < 8) {
 			return res.status(422).json({
-				error: 'password must contain at least 8 characters!',
+				error: 'Password must contain at least 8 characters!',
+			});
+		}
+
+		if (!passwordConfirmation) {
+			return res.status(422).json({
+				error: 'Password confirmation is requeired!',
 			});
 		}
 
 		if (password !== passwordConfirmation) {
 			return res.status(422).json({
-				error: 'password and password confirmation do not match!',
+				error: 'Password and password confirmation do not match!',
 			});
 		}
-
 		//#endregion
 
-		console.log({ userName, email, password, passwordConfirmation });
+		const salt = bcrypt.genSaltSync(10);
+		const hashPassword = bcrypt.hashSync(password, salt);
+
+		try {
+			const user = await User.create({
+				userName: userName,
+				email: email,
+				password: hashPassword,
+			});
+
+			return res.status(201).json({
+				message: 'User created successfullyr!',
+				user,
+			});
+		} catch (error) {
+			res.status(500).json({
+				error,
+			});
+		}
 	},
 
 	async login(req, res) {
