@@ -1,6 +1,5 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-//require('dotenv').config();
 
 const User = require('../models/User.js');
 
@@ -98,9 +97,60 @@ const AuthCrontoller = {
 	},
 
 	async login(req, res) {
-		res.status(200).json({
-			message: 'ok',
-		});
+		const { email, password } = req.body;
+
+		// Validações
+		//#region
+		//email
+		if (!email) {
+			return res.status(422).json({
+				error: 'Email is requeired!',
+			});
+		}
+
+		if (!email.match('@') || !email.match('.com')) {
+			return res.status(422).json({
+				error: 'Email must contain "@" and ."com"!',
+			});
+		}
+
+		// Se o usuario existe no banco de dados
+		const user = await User.findOne({ where: { email: email } });
+
+		if (!user) {
+			return res.status(422).json({
+				error: 'User not found!',
+			});
+		}
+
+		//senha
+		if (!password) {
+			return res.status(422).json({
+				error: 'Password is requeired!',
+			});
+		}
+
+		if (!bcrypt.compareSync(password, user.password)) {
+			return res.status(422).json({
+				error: 'Incorrect password!',
+			});
+		}
+		//#endregion
+
+		try {
+			const token = createToken({ id: user.id, email: user.email });
+
+			return res.status(200).json({
+				message: 'Login successfully!',
+				user,
+				token,
+			});
+		} catch (error) {
+			console.log(error);
+			res.status(500).json({
+				error: error,
+			});
+		}
 	},
 };
 
