@@ -1,7 +1,5 @@
-const { Router } = require('express');
+const router = require('express').Router();
 const AuthCrontoller = require('../controllers/AuthCrontroller.js');
-
-const router = Router();
 
 router.route('/register').post(AuthCrontoller.register);
 router.route('/login').post(AuthCrontoller.login);
