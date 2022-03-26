@@ -1,6 +1,7 @@
 const { DataTypes } = require('sequelize');
 
 const db = require('../db/conn.js');
+const Tasks = require('./Tasks.js');
 
 const Objectives = db.define('Objectives', {
 	contents: {
@@ -13,5 +14,8 @@ const Objectives = db.define('Objectives', {
 		allowNull: false,
 	},
 });
+
+Objectives.belongsTo(Tasks);
+Tasks.hasMany(Objectives);
 
 module.exports = Objectives;
