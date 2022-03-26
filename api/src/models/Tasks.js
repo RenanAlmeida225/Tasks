@@ -1,6 +1,7 @@
 const { DataTypes } = require('sequelize');
 
 const db = require('../db/conn.js');
+const User = require('./User.js');
 
 const Tasks = db.define('Tasks', {
 	title: {
@@ -13,5 +14,8 @@ const Tasks = db.define('Tasks', {
 		allowNull: false,
 	},
 });
+
+Tasks.belongsTo(User);
+User.hasMany(Tasks);
 
 module.exports = Tasks;
