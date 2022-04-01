@@ -1,9 +1,8 @@
 const router = require('express').Router();
 
-router.route('/').get((req, res) => {
-	res.status(200).json({
-		message: 'ok',
-	});
-});
+const TasksController = require('../controllers/TasksCrontroller.js');
+
+router.route('/').get(TasksController.allTasks);
+router.route('/createTasks/:userId').post(TasksController.createTasks);
 
 module.exports = router;

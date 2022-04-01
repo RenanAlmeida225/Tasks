@@ -27,6 +27,6 @@ app.use('/api/authentication', AuthRoutes);
 app.use('/api/tasks', TasksRoutes);
 
 //{ alter: true }{ force: true }
-conn.sync({ alter: true })
+conn.sync({ force: true })
 	.then(app.listen(port, () => console.log(`Open on port ${port}!`)))
 	.catch(error => console.error(error));
