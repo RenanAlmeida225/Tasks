@@ -15,7 +15,7 @@ const Objectives = db.define('Objectives', {
 	},
 });
 
-Tasks.hasMany(Objectives, { foreignKey: 'taksksId' });
-Objectives.belongsTo(Tasks, { foreignKey: 'taksksId' });
+Tasks.hasMany(Objectives, { foreignKey: 'tasksId' });
+Objectives.belongsTo(Tasks, { foreignKey: 'tasksId' });
 
 module.exports = Objectives;

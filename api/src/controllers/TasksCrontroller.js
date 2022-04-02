@@ -1,4 +1,5 @@
 const Tasks = require('../models/Tasks.js');
+const Objectives = require('../models/Objectives.js');
 
 const TasksController = {
 	async allTasks(req, res) {
@@ -19,7 +20,7 @@ const TasksController = {
 
 		if (!title) {
 			return res.status(422).json({
-				error: 'title is requeired!',
+				error: 'Title is requeired!',
 			});
 		}
 
@@ -32,6 +33,39 @@ const TasksController = {
 			});
 		} catch (error) {
 			console.log(error);
+			return res.status(500).json({
+				error: error,
+			});
+		}
+	},
+
+	async createObjectives(req, res) {
+		const tasksId = req.params.tasksId;
+		const contents = req.body.contents;
+
+		if (!tasksId) {
+			res.status(422).json({
+				error: 'Tasks id is requeired!',
+			});
+		}
+
+		if (!contents) {
+			res.status(422).json({
+				error: 'Contents is requeired!',
+			});
+		}
+
+		try {
+			const objectives = await Objectives.create({
+				contents: contents,
+				tasksId: tasksId,
+			});
+
+			return res.status(201).json({
+				message: 'User created successfullyr!',
+				objectives,
+			});
+		} catch (error) {
 			return res.status(500).json({
 				error: error,
 			});
