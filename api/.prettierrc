@@ -1,11 +1,9 @@
 {
-	"tabWidth": 4,
-	"useTabs": true,
-	"semi": true,
-	"singleQuote": true,
-	"trailingComma": "none",
-	"bracketSpacing": false,
-	"bracketSameLine": false,
-	"arrowParens": "avoid",
-	"singleAttributePerLine": false
+  "tabWidth": 4,
+  "useTabs": true,
+  "semi": true,
+  "singleQuote": true,
+  "bracketSpacing": true,
+  "bracketSameLine": true,
+  "arrowParens": "avoid"
 }
