@@ -1,9 +1,9 @@
 const { DataTypes } = require('sequelize');
 
-const db = require('../db/conn.js');
+const sequelize = require('../db/conn.js');
 const User = require('./User.js');
 
-const Tasks = db.define('Tasks', {
+const Tasks = sequelize.define('Tasks', {
 	title: {
 		type: DataTypes.STRING,
 		allowNull: false,
