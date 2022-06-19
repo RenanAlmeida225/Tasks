@@ -2,10 +2,9 @@ const router = require('express').Router();
 
 const TasksController = require('../controllers/TasksCrontroller.js');
 
-router.route('/').get(TasksController.allTasks);
-router.route('/createTasks/:userId').post(TasksController.createTasks);
 router
-	.route('/createObjectives/:tasksId')
-	.post(TasksController.createObjectives);
+	.route('/')
+	.get(TasksController.allTasks)
+	.post(TasksController.createTasks);
 
 module.exports = router;
