@@ -21,9 +21,7 @@ class TasksController {
 			const tasks = await Tasks.findAll({
 				where: { userId: userId, id: id }
 			});
-			return res.status(200).json({
-				tasks
-			});
+			return res.status(200).json({ tasks });
 		} catch (error) {
 			return res.status(400).json({ error: error.message });
 		}
@@ -35,9 +33,7 @@ class TasksController {
 		try {
 			if (!title) throw new Error('Missing param title!');
 			const tasks = await Tasks.create({ title: title, userId: userId });
-			return res.status(201).json({
-				tasks
-			});
+			return res.status(201).json({ tasks });
 		} catch (error) {
 			return res.status(500).json({
 				error: error.message
@@ -54,6 +50,19 @@ class TasksController {
 				{ title },
 				{ where: { userId: userId, id: id } }
 			);
+			return res.status(200).json({ task });
+		} catch (error) {
+			return res.status(400).json({ error: error.message });
+		}
+	}
+
+	static async deleteTasks(req, res) {
+		const { id } = req.params;
+		const { userId } = req.body;
+		try {
+			const task = await Tasks.destroy({
+				where: { userId: userId, id: id }
+			});
 			return res.status(200).json({ task });
 		} catch (error) {
 			return res.status(400).json({ error: error.message });
