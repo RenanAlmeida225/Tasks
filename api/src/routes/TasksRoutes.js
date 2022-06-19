@@ -10,6 +10,7 @@ router
 router
 	.route('/:id')
 	.get(TasksController.getTasksById)
-	.put(TasksController.updateTasks);
+	.put(TasksController.updateTasks)
+	.delete(TasksController.deleteTasks);
 
 module.exports = router;
