@@ -7,6 +7,9 @@ router
 	.get(TasksController.allTasks)
 	.post(TasksController.createTasks);
 
-router.route('/:id').get(TasksController.getTasksById);
+router
+	.route('/:id')
+	.get(TasksController.getTasksById)
+	.put(TasksController.updateTasks);
 
 module.exports = router;
