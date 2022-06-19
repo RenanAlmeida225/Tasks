@@ -4,8 +4,8 @@ const genHash = require('../helpers/genHash');
 const genToken = require('../helpers/genToken');
 const comparePassword = require('../helpers/comparePassword');
 
-const AuthCrontoller = {
-	async register(req, res) {
+class AuthCrontoller {
+	static async register(req, res) {
 		const { userName, email, password } = req.body;
 
 		try {
@@ -30,9 +30,9 @@ const AuthCrontoller = {
 				error: error.message
 			});
 		}
-	},
+	}
 
-	async login(req, res) {
+	static async login(req, res) {
 		const { email, password } = req.body;
 
 		try {
@@ -56,6 +56,6 @@ const AuthCrontoller = {
 			});
 		}
 	}
-};
+}
 
 module.exports = AuthCrontoller;
