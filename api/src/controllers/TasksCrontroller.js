@@ -44,6 +44,21 @@ class TasksController {
 			});
 		}
 	}
+
+	static async updateTasks(req, res) {
+		const { id } = req.params;
+		const { title, userId } = req.body;
+
+		try {
+			const task = await Tasks.update(
+				{ title },
+				{ where: { userId: userId, id: id } }
+			);
+			return res.status(200).json({ task });
+		} catch (error) {
+			return res.status(400).json({ error: error.message });
+		}
+	}
 }
 
 module.exports = TasksController;
