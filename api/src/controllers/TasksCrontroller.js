@@ -13,6 +13,22 @@ class TasksController {
 		}
 	}
 
+	static async getTasksById(req, res) {
+		const { id } = req.params;
+		const { userId } = req.body;
+
+		try {
+			const tasks = await Tasks.findAll({
+				where: { userId: userId, id: id }
+			});
+			return res.status(200).json({
+				tasks
+			});
+		} catch (error) {
+			return res.status(400).json({ error: error.message });
+		}
+	}
+
 	static async createTasks(req, res) {
 		const userId = req.params.userId;
 		const title = req.body.title;
