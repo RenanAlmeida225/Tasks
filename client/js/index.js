@@ -1,11 +1,9 @@
-import aadd from './createTasks';
-
-const createButton = document.querySelector('.icon-create');
 const tasks = document.querySelector('.tasks');
+const createButton = document.querySelector('.icon-create');
 
 createButton.addEventListener('click', () => {
 	createTasks(tasks);
-	aadd();
+	//window.location.assign('./teste.html');
 });
 
 function createTasks(element) {
@@ -34,6 +32,4 @@ function createTasks(element) {
     </div>\n\
 </div>';
 	element.insertAdjacentHTML('beforeend', node);
-
-	console.log('here!');
 }

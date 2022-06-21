@@ -1,0 +1,73 @@
+header{
+    background-color: var(--caribbean-grenn);
+    height: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.menu{
+    display: flex;
+    justify-content: space-between;
+    width: 90%;
+}
+
+.menu .icon-create button{
+    height: 70px;
+    width: 70px;
+    font-size: 50px;
+    color: var(--white);
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.tasks{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.task{
+    height: 70px;
+    width: 50%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 30px;
+    margin: 10px 0;
+    background-color: var(--white);
+    color: var(--caribbean-grenn);
+    border: 5px solid var(--caribbean-grenn);
+    border-radius: 15px;
+    padding: 0 20px;
+}
+
+.task .title{
+    font-weight: bold;
+}
+
+.task .icons{
+    width: 20%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.task .icons .icon button{
+    height: 50px;
+    width: 50px;
+    font-size: 30px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--caribbean-grenn);
+}
+
+.task .icons .icon-edit button:hover{
+    color: var(--blue-munsell);
+}
+
+.task .icons .icon-delete button:hover{
+    color: var(--tart-red);
+}
