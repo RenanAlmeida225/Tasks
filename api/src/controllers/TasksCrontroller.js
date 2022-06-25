@@ -1,8 +1,9 @@
+const getUserByToken = require('../helpers/getUserByToken.js');
 const Tasks = require('../models/Tasks.js');
 
 class TasksController {
 	static async allTasks(req, res) {
-		const { userId } = req.body;
+		const userId = getUserByToken(req);
 		try {
 			const tasks = await Tasks.findAll({ where: { userId: userId } });
 			return res.status(200).json({
@@ -15,7 +16,7 @@ class TasksController {
 
 	static async getTasksById(req, res) {
 		const { id } = req.params;
-		const { userId } = req.body;
+		const userId = getUserByToken(req);
 
 		try {
 			const tasks = await Tasks.findAll({
@@ -28,7 +29,8 @@ class TasksController {
 	}
 
 	static async createTasks(req, res) {
-		const { title, userId } = req.body;
+		const { title } = req.body;
+		const userId = getUserByToken(req);
 
 		try {
 			if (!title) throw new Error('Missing param title!');
@@ -43,7 +45,8 @@ class TasksController {
 
 	static async updateTasks(req, res) {
 		const { id } = req.params;
-		const { title, userId } = req.body;
+		const { title } = req.body;
+		const userId = getUserByToken(req);
 
 		try {
 			const task = await Tasks.update(
@@ -58,7 +61,7 @@ class TasksController {
 
 	static async deleteTasks(req, res) {
 		const { id } = req.params;
-		const { userId } = req.body;
+		const userId = getUserByToken(req);
 		try {
 			const task = await Tasks.destroy({
 				where: { userId: userId, id: id }
