@@ -14,6 +14,6 @@ router
 	.put(verifyToken, TasksController.updateTasks)
 	.delete(verifyToken, TasksController.deleteTasks);
 
-router.get('/complete/:id', verifyToken, TasksController.comleteTasks);
+router.put('/complete/:id', verifyToken, TasksController.comleteTasks);
 
 module.exports = router;

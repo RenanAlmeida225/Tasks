@@ -79,13 +79,13 @@ class TasksController {
 
 		try {
 			complete = (await isComplete(id, userId)) ? false : true;
-			const task = await Tasks.update(
+			await Tasks.update(
 				{ complete },
 				{
 					where: { userId: userId, id: id }
 				}
 			);
-			return res.status(200).json({ task });
+			return res.status(200).json({ complete });
 		} catch (error) {
 			console.log(error);
 			return res.status(400).json({ error: error.message });
