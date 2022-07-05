@@ -71,6 +71,34 @@ class TasksController {
 			return res.status(400).json({ error: error.message });
 		}
 	}
+
+	static async comleteTasks(req, res) {
+		const { id } = req.params;
+		const userId = getUserByToken(req);
+		let complete;
+
+		try {
+			complete = (await isComplete(id, userId)) ? false : true;
+			const task = await Tasks.update(
+				{ complete },
+				{
+					where: { userId: userId, id: id }
+				}
+			);
+			return res.status(200).json({ task });
+		} catch (error) {
+			console.log(error);
+			return res.status(400).json({ error: error.message });
+		}
+	}
 }
+
+isComplete = async (id, userId) => {
+	const task = await Tasks.findOne({
+		where: { userId: userId, id: id }
+	});
+	const complete = task.complete;
+	return complete;
+};
 
 module.exports = TasksController;
