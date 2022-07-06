@@ -1,3 +1,5 @@
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css");
+
 header{
     background-color: var(--caribbean-grenn);
     height: 70px;
@@ -66,14 +68,6 @@ h1,h2{
     border: none;
     cursor: pointer;
     color: var(--caribbean-grenn);
-}
-
-.task .icons .icon-edit button:hover{
-    color: var(--blue-munsell);
-}
-
-.task .icons .icon-delete button:hover{
-    color: var(--tart-red);
 }
 
 /* MODAL */
@@ -153,4 +147,22 @@ h1,h2{
 .modal .close:hover{
     background-color: var(--white);
     color: var(--caribbean-grenn);
+}
+
+.task.complete{
+    background-color: var(--caribbean-grenn);
+    color: var(--white);
+    text-decoration: line-through;
+}
+
+.task.complete .icons .icon button{
+    color: var(--white);
+}
+
+.task .icons .icon-edit button:hover{
+    color: var(--blue-munsell);
+}
+
+.task .icons .icon-delete button:hover{
+    color: var(--tart-red);
 }
