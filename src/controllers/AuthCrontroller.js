@@ -1,26 +1,29 @@
-const UserRepository = require('../repositories/UserRepository');
+const ModelRepository = require('../repositories/ModelRepository');
+const User = require('../models/User');
 const comparePassword = require('../helpers/comparePassword');
+
+const modelRepository = new ModelRepository(User);
 
 class AuthCrontoller {
 	async register({userName, email, password}) {
 		if (!userName) throw new Error('Missing param userName!');
 		if (!email) throw new Error('Missing param email!');
 		if (!password) throw new Error('Missing param password!');
-		const user = await UserRepository.save({
+		const res = await modelRepository.save({
 			userName: userName,
 			email: email,
 			password: password
 		});
-		return user;
+		return res;
 	}
 
 	async login({email, password}) {
 		if (!email) throw new Error('Missing param email!');
 		if (!password) throw new Error('Missing param password!');
-		const user = await UserRepository.findOne({email: email});
-		if (!user) throw new Error('User not found!');
-		comparePassword(password, user.password);
-		return user;
+		const res = await modelRepository.findOne({email: email});
+		if (!res) throw new Error('User not found!');
+		comparePassword(password, res.password);
+		return res;
 	}
 }
 
