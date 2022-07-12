@@ -1,27 +1,32 @@
+const Tasks = require('../models/Tasks');
 class ModelRepository {
-	constructor() {
-		if (this.constructor == ModelRepository) {
-			throw new Error('Object of Abstract Class cannot be created');
-		}
+	constructor(model) {
+		this.model = model;
 	}
 
-	static async findAll() {
-		throw new Error('Abstract Method has no implementation');
+	async findAll(data) {
+		const res = await this.model.findAll({where: data});
+		return res;
 	}
 
-	static async findOne(data) {
-		throw new Error('Abstract Method has no implementation');
+	async findOne(data) {
+		const res = await this.model.findOne({where: data});
+		return res;
 	}
 
-	static async save(data) {
-		throw new Error('Abstract Method has no implementation');
+	async save(data) {
+		const res = await this.model.create(data);
+		return res;
 	}
 
-	static async update(data) {
-		throw new Error('Abstract Method has no implementation');
+	async update(objt, data) {
+		const res = await Tasks.update(objt, {where: data});
+		return res;
 	}
-	static async delete(data) {
-		throw new Error('Abstract Method has no implementation');
+
+	async delete(data) {
+		const res = await this.model.destroy({where: data});
+		return res;
 	}
 }
 
