@@ -63,6 +63,32 @@ describe('AuthContoller', () => {
 				expect(error.message).toEqual('Missing param password!');
 			}
 		});
+		it('should return error Password incorret', async () => {
+			const data = {email: 'teste@teste.com', password: 'teste123'};
+			MockUser.findOne = jest.fn();
+			MockUser.findOne.mockResolvedValue(data);
+			comparePassword.mockResolvedValue(false);
+			try {
+				await authCrontoller.login(data);
+			} catch (error) {
+				expect(error.message).toEqual('Password incorret!');
+			}
+		});
+
+		it('should return error User not found!', async () => {
+			MockUser.findOne = jest.fn();
+			MockUser.findOne.mockResolvedValue(null);
+			comparePassword.mockResolvedValue(true);
+			try {
+				await authCrontoller.login({
+					email: 'teste@teste.com',
+					password: 'teste123'
+				});
+			} catch (error) {
+				expect(error.message).toEqual('User not found!');
+			}
+		});
+
 		it('should return user', async () => {
 			const data = {email: 'teste@teste.com', password: 'teste123'};
 			MockUser.findOne = jest.fn();
