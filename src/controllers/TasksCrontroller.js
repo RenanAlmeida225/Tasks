@@ -1,104 +1,63 @@
-const getUserByToken = require('../helpers/getUserByToken.js');
-const Tasks = require('../models/Tasks.js');
-
 class TasksController {
-	static async allTasks(req, res) {
-		const userId = getUserByToken(req);
-		try {
-			const tasks = await Tasks.findAll({ where: { userId: userId } });
-			return res.status(200).json({
-				tasks
-			});
-		} catch (error) {
-			return res.status(400).json({ error: error.message });
-		}
+	constructor(tasks) {
+		this.tasks = tasks;
+	}
+	async allTasks(userId) {
+		if (!userId) throw new Error('Missing param userId!');
+		const res = await this.tasks.findAll({where: {userId}});
+		return res;
 	}
 
-	static async getTasksById(req, res) {
-		const { id } = req.params;
-		const userId = getUserByToken(req);
-
-		try {
-			const tasks = await Tasks.findAll({
-				where: { userId: userId, id: id }
-			});
-			return res.status(200).json({ tasks });
-		} catch (error) {
-			return res.status(400).json({ error: error.message });
-		}
+	async getTasksById({id, userId}) {
+		if (!id) throw new Error('Missing param id!');
+		if (!userId) throw new Error('Missing param userId!');
+		const res = await this.tasks.findAll({where: {id, userId}});
+		return res;
 	}
 
-	static async createTasks(req, res) {
-		const { title } = req.body;
-		const userId = getUserByToken(req);
-
-		try {
-			if (!title) throw new Error('Missing param title!');
-			const tasks = await Tasks.create({ title: title, userId: userId });
-			return res.status(201).json({ tasks });
-		} catch (error) {
-			return res.status(500).json({
-				error: error.message
-			});
-		}
+	async createTasks({title, userId}) {
+		if (!title) throw new Error('Missing param title!');
+		if (!userId) throw new Error('Missing param userId!');
+		const res = await this.tasks.create({title, userId});
+		return res;
 	}
 
-	static async updateTasks(req, res) {
-		const { id } = req.params;
-		const { title } = req.body;
-		const userId = getUserByToken(req);
+	async updateTasks({title, id, userId}) {
+		if (!title) throw new Error('Missing param title!');
+		if (!id) throw new Error('Missing param id!');
+		if (!userId) throw new Error('Missing param userId!');
+		let res = await this.tasks.update(
+			{title: title},
+			{where: {id, userId}}
+		);
+		res = res[0] === 1 ? 'update succeful' : 'falied update!';
 
-		try {
-			const task = await Tasks.update(
-				{ title },
-				{ where: { userId: userId, id: id } }
-			);
-			return res.status(200).json({ task });
-		} catch (error) {
-			return res.status(400).json({ error: error.message });
-		}
+		return res;
 	}
 
-	static async deleteTasks(req, res) {
-		const { id } = req.params;
-		const userId = getUserByToken(req);
-		try {
-			const task = await Tasks.destroy({
-				where: { userId: userId, id: id }
-			});
-			return res.status(200).json({ task });
-		} catch (error) {
-			return res.status(400).json({ error: error.message });
-		}
+	async deleteTasks({id, userId}) {
+		if (!id) throw new Error('Missing param id!');
+		if (!userId) throw new Error('Missing param userId!');
+		let res = await this.tasks.destroy({where: {id, userId}});
+		res = res === 1 ? 'Delete succesful' : 'Delete failed';
+		return res;
 	}
 
-	static async comleteTasks(req, res) {
-		const { id } = req.params;
-		const userId = getUserByToken(req);
-		let complete;
+	async #isComplete({id, userId}) {
+		if (!id) throw new Error('Missing param id!');
+		if (!userId) throw new Error('Missing param userId!');
+		const res = await this.tasks.findOne({where: {id, userId}});
+		let complete = res.complete;
+		return complete;
+	}
 
-		try {
-			complete = (await isComplete(id, userId)) ? false : true;
-			await Tasks.update(
-				{ complete },
-				{
-					where: { userId: userId, id: id }
-				}
-			);
-			return res.status(200).json({ complete });
-		} catch (error) {
-			console.log(error);
-			return res.status(400).json({ error: error.message });
-		}
+	async comleteTasks({id, userId}) {
+		if (!id) throw new Error('Missing param id!');
+		if (!userId) throw new Error('Missing param userId!');
+		let complete = (await this.#isComplete({id, userId})) ? false : true;
+		await this.tasks.update({complete}, {where: {id, userId}});
+		return `Complete ${complete}`;
 	}
 }
-
-isComplete = async (id, userId) => {
-	const task = await Tasks.findOne({
-		where: { userId: userId, id: id }
-	});
-	const complete = task.complete;
-	return complete;
-};
 
 module.exports = TasksController;
