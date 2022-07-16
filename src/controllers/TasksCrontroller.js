@@ -4,14 +4,20 @@ class TasksController {
 	}
 	async allTasks(userId) {
 		if (!userId) throw new Error('Missing param userId!');
-		const res = await this.tasks.findAll({where: {userId}});
+		const res = await this.tasks.findAll({
+			where: {userId},
+			attributes: ['id', 'title', 'complete']
+		});
 		return res;
 	}
 
 	async getTasksById({id, userId}) {
 		if (!id) throw new Error('Missing param id!');
 		if (!userId) throw new Error('Missing param userId!');
-		const res = await this.tasks.findAll({where: {id, userId}});
+		const res = await this.tasks.findOne({
+			where: {id, userId},
+			attributes: ['id', 'title', 'complete']
+		});
 		return res;
 	}
 
@@ -30,7 +36,7 @@ class TasksController {
 			{title: title},
 			{where: {id, userId}}
 		);
-		res = res[0] === 1 ? 'update succeful' : 'falied update!';
+		res = res[0] === 1 ? 'Successfully updated!' : 'Update failed!';
 
 		return res;
 	}
@@ -39,14 +45,17 @@ class TasksController {
 		if (!id) throw new Error('Missing param id!');
 		if (!userId) throw new Error('Missing param userId!');
 		let res = await this.tasks.destroy({where: {id, userId}});
-		res = res === 1 ? 'Delete succesful' : 'Delete failed';
+		res = res === 1 ? 'Successfully deleted!' : 'Delete failed!';
 		return res;
 	}
 
 	async #isComplete({id, userId}) {
 		if (!id) throw new Error('Missing param id!');
 		if (!userId) throw new Error('Missing param userId!');
-		const res = await this.tasks.findOne({where: {id, userId}});
+		const res = await this.tasks.findOne({
+			where: {id, userId},
+			attributes: ['id', 'title', 'complete']
+		});
 		let complete = res.complete;
 		return complete;
 	}
